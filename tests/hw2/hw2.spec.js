@@ -34,8 +34,8 @@ test('locatorCheck', async ({ page }) => {
 
 test('locatorSelectOption', async ({ page }) => {
     await page.goto('https://demoqa.com/select-menu');
-    await page.locator('xpath=//*[@id="oldSelectMenu"]').selectOption('Blue');
-    await expect (page.locator('xpath=//*[@id="oldSelectMenu"]')).toContainText('Blue');
+    await page.locator('css=#oldSelectMenu').selectOption('Blue');
+    await expect (page.locator('css=#oldSelectMenu')).toContainText('Blue');
 
         // await page.getByText('Select Option').selectOption('A root option');          //Почему этот тест не работает? Как сделать selectOption на div элемент?
 })
@@ -70,8 +70,8 @@ test('locatorHover2', async ({ page }) => {
 
 test('locatorSetInputFiles', async ({ page }) => {
     await page.goto('https://demoqa.com/upload-download');
-    await page.locator('xpath = //*[@id="uploadFile"]').setInputFiles("/../../playwright.png");  // Какой путь к файлу нужно указывать, чтобы тест заработал?
-    await expect (page.locator('xpath = //*[@id="uploadedFilePath"]')).toBeVisible();
+    await page.locator('css=#uploadFile').setInputFiles("tests/hw2/playwright.png"); 
+    await expect (page.locator('css=#uploadedFilePath')).toBeVisible();
 })
 
 
@@ -86,7 +86,7 @@ test('locatorPress', async ({ page }) => {
 test('locatorDragAndDrop', async ({ page }) => {
     await page.goto('https://demoqa.com/droppable');
     const dragMe = page.getByText('Drag me', { exact: true });
-    const dropHere = page.locator('xpath=/html/body/div[2]/div/div/div[2]/div[2]/div[2]/div/div[1]/div/div[2]'); // Какой можно было здесь селектор использовать??
+    const dropHere = page.locator('css=#simpleDropContainer #droppable'); 
     await dragMe.dragTo(dropHere);
     await expect (page.getByText('Dropped')).toBeVisible();
 })
@@ -96,5 +96,4 @@ test('calendarCheck', async ({ page }) => {
     await page.locator('#dateOfBirthInput').click();
     await page.getByLabel('Choose Wednesday, April 12th, 2023').click();
     await expect (page.locator('#dateOfBirthInput')).toHaveValue('12 Apr 2023');
-
 })
