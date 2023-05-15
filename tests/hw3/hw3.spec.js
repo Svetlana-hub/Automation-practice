@@ -68,8 +68,7 @@ test('cookies', async ({ request, page }) => {
     }) 
     const responseJsonAuth = await responseAuth.json();
     console.log(responseJsonAuth);
-    // await expect(Array.isArray(responseJsonAuth.books).toBeTruthy());
-    console.log((Array.isArray(responseJsonAuth.books)));
+    await expect(Array.isArray(responseJsonAuth.books)).toBeTruthy();
     expect(responseJsonAuth.username).toBe(config.homework3Auth.userName);
 })
 

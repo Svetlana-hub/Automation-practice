@@ -112,8 +112,7 @@ test('homework4', async ({ request, page }) => {
   })
 
   await test.step('check-response-for-auth-request', async () => {
-    // await expect(Array.isArray(responseJsonAuth.books).toBeTruthy());
-    console.log(Array.isArray(responseJsonAuth.books))
+    expect(Array.isArray(responseJsonAuth.books)).toBeTruthy()
     expect(responseJsonAuth.username).toBe(config.homework3Auth.userName)
   })
 })
