@@ -1,6 +1,8 @@
-import { test, expect } from '@playwright/test'
+import { test, expect, chromium } from '@playwright/test'
+
 import config from '../../../config.json'
-test('homework4', async ({ request, page }) => {
+
+test('homework4', async ({ request }) => {
   let token
   let userId
   let responsePromise
@@ -9,6 +11,16 @@ test('homework4', async ({ request, page }) => {
   let responseAuth
   let responseJsonAuth
   let cookies
+
+  const browser = await chromium.launch({
+    logger: {
+      isEnabled: () => true,
+      log: (name, message, severity) =>
+        console.log(`${name} ${message} ${severity}`),
+    },
+  })
+  const context = await browser.newContext()
+  const page = await context.newPage()
 
   await test.step('sign-in', async () => {
     await page.goto('https://demoqa.com/login')
@@ -58,12 +70,10 @@ test('homework4', async ({ request, page }) => {
     responseJson = await response.json()
     // console.log(responseJson);
 
-    const numberFromUI = await page
-      .getByRole('gridcell')
-      .filter({ has: page.getByRole('link') })
-      .count()
     const numberFromRequest = responseJson.books.length
-    expect(numberFromRequest).toEqual(numberFromUI)
+    await expect(
+      page.getByRole('gridcell').filter({ has: page.getByRole('link') })
+    ).toHaveCount(numberFromRequest)
   })
 
   await test.step('set-random-Pages', async () => {
@@ -112,7 +122,7 @@ test('homework4', async ({ request, page }) => {
   })
 
   await test.step('check-response-for-auth-request', async () => {
-    expect(Array.isArray(responseJsonAuth.books)).toBeTruthy()
+    expect(responseJsonAuth.books.length).toBe(0)
     expect(responseJsonAuth.username).toBe(config.homework3Auth.userName)
   })
 })

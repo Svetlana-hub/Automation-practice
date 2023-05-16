@@ -32,11 +32,10 @@ test('cookies', async ({ request, page }) => {
     const response = await responsePromise;
     expect(response.status()).toBe(200);
     const responseJson = await response.json();
-    // console.log(responseJson);
+    // console.log(responseJson)
 
-   const numberFromUI = await page.getByRole("gridcell").filter({ has: page.getByRole('link')}).count();
-   const numberFromRequest = responseJson.books.length;
-   expect(numberFromRequest).toEqual(numberFromUI);
+    const numberFromRequest = responseJson.books.length;
+    await expect(page.getByRole("gridcell").filter({ has: page.getByRole('link')})).toHaveCount(numberFromRequest);
 
 
   const randomPages = Math.round(Math.random() * 999 + 1).toString();
@@ -68,7 +67,7 @@ test('cookies', async ({ request, page }) => {
     }) 
     const responseJsonAuth = await responseAuth.json();
     console.log(responseJsonAuth);
-    await expect(Array.isArray(responseJsonAuth.books)).toBeTruthy();
+    expect(responseJsonAuth.books.length).toBe(0);
     expect(responseJsonAuth.username).toBe(config.homework3Auth.userName);
 })
 
