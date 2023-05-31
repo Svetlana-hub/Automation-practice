@@ -1,8 +1,9 @@
-import { test, expect, chromium } from '@playwright/test'
+import { test, expect } from '@playwright/test'
 
 import config from '../../../config.json'
 
-test('homework4', async ({ request }) => {
+
+test('homework4', async ({ request, page }) => {
   let token
   let userId
   let responsePromise
@@ -12,15 +13,6 @@ test('homework4', async ({ request }) => {
   let responseJsonAuth
   let cookies
 
-  const browser = await chromium.launch({
-    logger: {
-      isEnabled: () => true,
-      log: (name, message, severity) =>
-        console.log(`${name} ${message} ${severity}`),
-    },
-  })
-  const context = await browser.newContext()
-  const page = await context.newPage()
 
   await test.step('sign-in', async () => {
     await page.goto('https://demoqa.com/login')
